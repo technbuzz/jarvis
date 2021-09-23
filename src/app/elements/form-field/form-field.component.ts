@@ -1,4 +1,4 @@
-import { Component, ContentChildren, OnInit, Query, QueryList } from "@angular/core";
+import { Component, ContentChild, ContentChildren, OnInit, Query, QueryList } from "@angular/core";
 import { DxFormFieldControl } from "./form-field-control";
 import { DxPrefix } from "./prefix";
 import { DxSuffix } from "./suffix";
@@ -47,12 +47,16 @@ export class FormField<T> implements OnInit {
   @ContentChildren(DxSuffix, { descendants: true })
   _suffixChildren!: QueryList<DxSuffix>;
 
-  @ContentChildren(DxFormFieldControl)
+  // @ContentChildren(DxInput)
+  // _control!: DxInput;
+
+  @ContentChild(DxFormFieldControl)
   _control!: DxFormFieldControl<T>;
 
   ngOnInit() {}
 
   ngAfterViewInit() {
     console.log(this._control);
+    
   }
 }

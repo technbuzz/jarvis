@@ -2,7 +2,13 @@ import { Directive, ElementRef, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { DxFormFieldControl } from '../form-field/form-field-control';
 
-@Directive({ selector: 'input[dxInput]' })
+@Directive({ 
+  selector: 'input[dxInput]',
+  host: {
+    '(blur)': '_onInput()'
+  },
+  providers: [{ provide: DxFormFieldControl, useExisting: DxInput }]
+})
 export class DxInput implements DxFormFieldControl<string> {
 
   /** Implemented as part of DtFormFieldControl. */
@@ -27,8 +33,13 @@ export class DxInput implements DxFormFieldControl<string> {
 
   /** Implement as part of DtFormFieldControl. */
   onContainerClick(): void {
-    debugger
     this.focus();
+  }
+
+  /** @Internal Hanles the input change - noop method */
+  _onInput(): void {
+    // _onInput is basically just a noop function to let change etection knwo
+    // when the user types. Never remove this function, even if it's empty.
   }
 
 
@@ -49,6 +60,5 @@ export class DxInput implements DxFormFieldControl<string> {
   private _required = false;
 
   constructor(private _elementRef: ElementRef) { 
-    debugger
   }
 }
