@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 
 import { DxLabel } from "./label";
 import { DxPrefix } from "./prefix";
-import { FormFieldComponent } from "./form-field.component";
+import { FormField } from "./form-field.component";
+import { DxInput } from "../input/input";
+// import { DxFormFieldControl } from "./form-field-control";
 
 @NgModule({
   imports: [CommonModule],
-  exports: [DxLabel, DxPrefix, FormFieldComponent],
-  declarations: [DxLabel, DxPrefix, FormFieldComponent],
+  exports: [DxLabel, DxPrefix, FormField],
+  declarations: [DxLabel, DxPrefix, FormField, DxInput],
   providers: []
 })
 export class ElementsModule {}
