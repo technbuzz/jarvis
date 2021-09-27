@@ -1,11 +1,14 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, Optional, Self } from '@angular/core';
+import { NgControl } from '@angular/forms';
+import { coerceBooleanProperty } from "@angular/cdk/coercion";
 import { Subject } from 'rxjs';
 import { DxFormFieldControl } from '../form-field/form-field-control';
 
 @Directive({ 
   selector: 'input[dxInput]',
   host: {
-    class: 'dt-input',
+    class: 'dx-input',
+    '[disabled]': 'disabled',
     '(input)': '_onInput()',
     '(blur)': '_focusChanged(false)',
     '(focus)': '_focusChanged(true)'
@@ -19,6 +22,26 @@ export class DxInput implements DxFormFieldControl<string> {
 
   /** Implemented as part of DtFormFieldControl. */
   readonly stateChanges = new Subject<void>();
+
+  /** Wheter the input is disabled. */
+  @Input()
+  get disabled(): boolean {
+    if (this.ngControl && this.ngControl.disabled !== null) {
+      return this.ngControl.disabled;
+    }
+
+    return this._disabled;
+  }
+  set disabled(value: boolean) {
+    this._disabled = coerceBooleanProperty(value);
+
+    // Browsers may not fire the blur event if the input is disable too quickly
+    // Reset from here to ensure the element doesn't become stuck.
+    if (this.focused) {
+      this.focused = false;
+      this.stateChanges.next();
+    }
+  }
   
   /** Whether the input is required. */
   @Input()
@@ -70,7 +93,11 @@ export class DxInput implements DxFormFieldControl<string> {
 
 
   private _required = false;
+  private _disabled = false;
 
-  constructor(private _elementRef: ElementRef) { 
+  constructor(
+    private _elementRef: ElementRef,
+    @Optional() @Self() public ngControl: NgControl
+  ) { 
   }
 }

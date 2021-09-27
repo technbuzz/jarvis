@@ -10,6 +10,9 @@ export abstract class DxFormFieldControl<T> {
   /** Whether the control is required  */
   readonly required!: boolean;
 
+  /** Whether the control is disabled. */
+  readonly disabled!: boolean;
+
   /** Whether the control is focused. */
   readonly focused!: boolean;
 
