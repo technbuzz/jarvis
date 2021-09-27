@@ -10,6 +10,9 @@ export abstract class DxFormFieldControl<T> {
   /** Whether the control is required  */
   readonly required!: boolean;
 
+  /** Whether the control is focused. */
+  readonly focused!: boolean;
+
   /** 
    * Stream that emits whenever the state of control changes such that the parent 
    * need to run change detection.

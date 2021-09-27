@@ -5,7 +5,10 @@ import { DxFormFieldControl } from '../form-field/form-field-control';
 @Directive({ 
   selector: 'input[dxInput]',
   host: {
-    '(blur)': '_onInput()'
+    class: 'dt-input',
+    '(input)': '_onInput()',
+    '(blur)': '_focusChanged(false)',
+    '(focus)': '_focusChanged(true)'
   },
   providers: [{ provide: DxFormFieldControl, useExisting: DxInput }]
 })
@@ -36,10 +39,19 @@ export class DxInput implements DxFormFieldControl<string> {
     this.focus();
   }
 
-  /** @Internal Hanles the input change - noop method */
+  /** @Internal Handles the input change - noop method */
   _onInput(): void {
     // _onInput is basically just a noop function to let change etection knwo
     // when the user types. Never remove this function, even if it's empty.
+  }
+
+  /** @Internal Callback for the cases where the focus state of the input changes. */
+  _focusChanged(isFocused: boolean): void {
+    console.log('isFocused: ', isFocused);
+    if (isFocused !== this.focused) {
+      this.focused = isFocused;
+      this.stateChanges.next();
+    }
   }
 
 

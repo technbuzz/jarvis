@@ -2,3 +2,9 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+
+.dx-input {
+  outline: none;
+  border: none;
+}
